@@ -1,6 +1,4 @@
 use std::path::PathBuf;
-use std::collections::HashMap;
-use swift_bridge_build::{CreatePackageConfig, ApplePlatform};
 
 fn main() {
     let out_dir = PathBuf::from("./generated");
@@ -14,6 +12,8 @@ fn main() {
         .write_all_concatenated(out_dir, env!("CARGO_PKG_NAME"));
 
     /*
+    use std::collections::HashMap;
+    use swift_bridge_build::{CreatePackageConfig, ApplePlatform};
     let lib_name = format!("lib_{}.a", env!("CARGO_PKG_NAME"));
 
     swift_bridge_build::create_package(CreatePackageConfig {

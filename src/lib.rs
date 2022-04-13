@@ -1,21 +1,65 @@
-
+use fluvio::{
+    Fluvio as FluvioNative,
+    TopicProducer as TopicProducerNative,
+};
+use fluvio_future::{
+    task::run_block_on,
+};
 #[swift_bridge::bridge]
 mod ffi {
     extern "Rust" {
-        fn hello_rust() -> String;
+        type Fluvio;
+
+        #[swift_bridge(init)]
+        fn connect() -> Fluvio;
+
+        fn topic_producer(self: &Fluvio, topic: &str) -> TopicProducer;
+        type TopicProducer;
+        pub fn send(
+            self: &TopicProducer,
+            key: &[u8],
+            value: &[u8],
+        ) ;
     }
 }
 
-fn hello_rust() -> String {
-    String::from("Hello from Rust!")
+pub struct Fluvio {
+    fluvio: FluvioNative,
 }
 
+impl Fluvio {
+    fn connect() -> Self {
+        let fluvio = run_block_on(FluvioNative::connect()).unwrap();
+        Fluvio {
+            fluvio
+        }
+    }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    pub fn topic_producer(
+        self: &Fluvio,
+        topic: &str,
+    ) -> TopicProducer {
+        TopicProducer::from(run_block_on(self.fluvio.topic_producer(topic)).unwrap())
+    }
+}
+
+pub struct TopicProducer {
+    producer: TopicProducerNative,
+}
+impl TopicProducer {
+    pub fn send(
+        self: &TopicProducer,
+        key: &[u8],
+        value: &[u8],
+    ) {
+        run_block_on(self.producer.send(key, value)).map(|_| ()).unwrap()
+    }
+}
+
+impl From<TopicProducerNative> for TopicProducer {
+    fn from(producer: TopicProducerNative) -> Self {
+        Self {
+            producer
+        }
     }
 }
