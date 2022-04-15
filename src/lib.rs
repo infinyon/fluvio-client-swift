@@ -11,7 +11,7 @@ mod ffi {
         type Fluvio;
 
         #[swift_bridge(init)]
-        fn connect() -> Fluvio;
+        fn connect(profile: &str) -> Fluvio;
 
         fn topic_producer(self: &Fluvio, topic: &str) -> TopicProducer;
         type TopicProducer;
@@ -28,7 +28,7 @@ pub struct Fluvio {
 }
 
 impl Fluvio {
-    fn connect() -> Self {
+    fn connect(profile: &str) -> Self {
         let fluvio = run_block_on(FluvioNative::connect()).unwrap();
         Fluvio {
             fluvio
