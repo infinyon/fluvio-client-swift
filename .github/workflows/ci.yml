@@ -35,4 +35,4 @@ jobs:
       - name: Build Swift package
         run: |
           cd FluvioClientSwift
-          xcodebuild -scheme FluvioClientSwift -destination 'platform=iOS Simulator,OS=15.4,name=iPhone 12'
+          xcodebuild -scheme FluvioClientSwift -destination generic/platform=iOS
