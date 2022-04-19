@@ -21,10 +21,10 @@ cargo build --target aarch64-apple-ios --profile=$CARGO_PROFILE
 cargo build --target x86_64-apple-ios --profile=$CARGO_PROFILE
 
 mkdir -p target/lipo-simulator
-lipo target/aarch64-apple-ios-sim/$CARGO_PROFILE/libfluvio_client_swift.a target/x86_64-apple-ios/$CARGO_PROFILE/libfluvio_client_swift.a -create -output target/lipo-simulator/libfluvio_client_swift.a
+lipo target/aarch64-apple-ios-sim/$CARGO_PROFILE_DIR/libfluvio_client_swift.a target/x86_64-apple-ios/$CARGO_PROFILE_DIR/libfluvio_client_swift.a -create -output target/lipo-simulator/libfluvio_client_swift.a
 
 # mkdir -p target/lipo-macos
-# lipo target/aarch64-apple-darwin/$CARGO_PROFILE/libfluvio_client_swift.a target/x86_64-apple-darwin/$CARGO_PROFILE/libfluvio_client_swift.a -create -output target/lipo-macos/libfluvio_client_swift.a
+# lipo target/aarch64-apple-darwin/$CARGO_PROFILE_DIR/libfluvio_client_swift.a target/x86_64-apple-darwin/$CARGO_PROFILE_DIR/libfluvio_client_swift.a -create -output target/lipo-macos/libfluvio_client_swift.a
 
 # for OS in iphoneos iphonesimulator macosx; do
 # 	xcrun -sdk $OS --show-sdk-path
@@ -39,7 +39,7 @@ rm -r FluvioClientSwift || true
 swift-bridge-cli create-package \
   --bridges-dir ./generated \
   --out-dir FluvioClientSwift \
-  --ios target/aarch64-apple-ios/$CARGO_PROFILE/libfluvio_client_swift.a \
+  --ios target/aarch64-apple-ios/$CARGO_PROFILE_DIR/libfluvio_client_swift.a \
   --simulator target/lipo-simulator/libfluvio_client_swift.a \
   --name FluvioClientSwift
 
