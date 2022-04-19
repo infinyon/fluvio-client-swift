@@ -2,7 +2,8 @@
 
 set -xe
 
-CARGO_PROFILE="${CARGO_PROFILE:-dev}"
+CARGO_PROFILE=${CARGO_PROFILE:-dev}
+CARGO_PROFILE_DIR=$([ "$CARGO_PROFILE" == "dev" ] && echo "debug" || echo "$CARGO_PROFILE")
 THISDIR=$(dirname $0)
 cd $THISDIR
 export RUST_LOG=debug
