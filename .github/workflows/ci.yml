@@ -1,0 +1,32 @@
+name: CI
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-latest
+    steps:
+      - name: Install Rustup Targets
+        run: |
+          rustup target add aarch64-apple-ios-sim
+          rustup target add aarch64-apple-ios
+          rustup target add x86_64-apple-ios
+      - name: Build Rust binaries
+        run: ./build-rust
+      - name: Build Swift Package
+        run: |
+          cd FluvioClientSwift
+          xcodebuild -scheme FluvioClientSwift -destination 'platform=iOS Simulator,OS=15.4,name=iPhone SE (3rd generation)'
