@@ -25,9 +25,9 @@ jobs:
           rustup target add aarch64-apple-ios-sim
           rustup target add aarch64-apple-ios
           rustup target add x86_64-apple-ios
-      - uses: Swatinem/rust-cache@v1
-        with:
-          cache-on-failure: true
+      # - uses: Swatinem/rust-cache@v1
+      #   with:
+      #     cache-on-failure: true
       - name: Install Swift Bridge CLI
         run: cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
       - name: Build Rust binaries
