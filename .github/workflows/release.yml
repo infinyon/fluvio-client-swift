@@ -1,0 +1,40 @@
+name: Release
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rustup Targets
+        run: |
+          rustup target add aarch64-apple-ios-sim
+          rustup target add aarch64-apple-ios
+          rustup target add x86_64-apple-ios
+      - name: Build Rust binaries
+        env:
+          CARGO_PROFILE: release
+        run: ./build-rust.sh
+      - name: Create GH release
+        run: gh release create ${{ github.event.inputs.tag }} -d --generate-notes
+      - name: ZIP release
+        run: zip -r FluvioClientSwift.zip FluvioClientSwift/
+      - name: Upload zip file to GH release
+        run: gh release upload ${{ github.event.inputs.tag }} 
+      - name: Publish CocoaPod Spec
+        run: |
+          pod repo add infinyon git@github.com:infinyon/CocoaPodSpecs.git
+          pod repo push infinyon --allow-warnings

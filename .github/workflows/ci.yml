@@ -25,6 +25,8 @@ jobs:
           rustup target add aarch64-apple-ios-sim
           rustup target add aarch64-apple-ios
           rustup target add x86_64-apple-ios
+      - name: Install Swift Bridge CLI
+        run: cargo install swift-bridge-cli
       - name: Build Rust binaries
         run: ./build-rust.sh
       - name: Build Swift package
