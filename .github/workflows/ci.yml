@@ -19,6 +19,7 @@ jobs:
     name: Build
     runs-on: macos-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install Rustup Targets
         run: |
           rustup target add aarch64-apple-ios-sim
