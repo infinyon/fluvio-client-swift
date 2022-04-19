@@ -45,5 +45,6 @@ swift-bridge-cli create-package \
 
 mv FluvioClientSwift/rust_framework.xcframework FluvioClientSwift/FluvioRust.xcframework
 sed -i '' 's/rust_framework/FluvioRust/g' ./FluvioClientSwift/Package.swift
+sed -i '' 's/RustXcframework/FluvioRust/g' ./FluvioClientSwift/Package.swift
 sed -i '' 's/RustXcframework/FluvioRust/g' ./FluvioClientSwift/Sources/FluvioClientSwift/*.swift
 sed -i '' 's/RustXcframework/FluvioRust/g' ./FluvioClientSwift/FluvioRust.xcframework/*/Headers/module.modulemap

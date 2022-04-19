@@ -1,5 +1,4 @@
 /target
-/Cargo.lock
 /generated
 /FluvioClientSwift
 /FluvioClientSwift.zip
