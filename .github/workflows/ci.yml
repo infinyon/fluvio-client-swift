@@ -27,9 +27,9 @@ jobs:
           rustup target add x86_64-apple-ios
       - uses: Swatinem/rust-cache@v1
       - name: Install Swift Bridge CLI
-        run: cargo install swift-bridge-cli
+        run: cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
       - name: Build Rust binaries
-        run: ./build-rust.sh
+        run: ./build-rust.sh && du FluvioClientSwift
       - name: Build Swift package
         run: |
           cd FluvioClientSwift

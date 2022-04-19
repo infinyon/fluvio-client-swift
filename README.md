@@ -11,7 +11,7 @@ rustup target add x86_64-apple-ios
 ### Swift Bridge CLI
 
 ```
-cargo install swift-bridge-cli
+cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
 ```
 
 ## Build
