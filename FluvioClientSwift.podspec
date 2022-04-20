@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.license      = { :type => "Apache License, Version 2.0", :file => "LICENSE" }
   spec.author       = "Fluvio Team <team@fluvio.io>"
   spec.platform     = :ios, "12.0"
-  spec.source       = { :http => "https://github.com/infinyon/fluvio-client-swift/releases/download/#{spec.version}/FluvioClientSwift.zip" }
+  spec.source       = { :http => "https://github.com/infinyon/fluvio-client-swift/releases/download/v#{spec.version}/FluvioClientSwift.zip" }
   spec.source_files = "FluvioClientSwift/Sources/**/*.{swift}"
   spec.vendored_frameworks  = "FluvioClientSwift/FluvioRust.xcframework"
 end
