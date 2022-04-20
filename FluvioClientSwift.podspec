@@ -11,5 +11,6 @@ Pod::Spec.new do |spec|
   spec.platform     = :ios, "12.0"
   spec.source       = { :http => "https://github.com/infinyon/fluvio-client-swift/releases/download/v#{spec.version}/FluvioClientSwift.zip" }
   spec.source_files = "FluvioClientSwift/Sources/**/*.{swift}"
+  spec.swift_versions = '4.0'
   spec.vendored_frameworks  = "FluvioClientSwift/FluvioRust.xcframework"
 end

@@ -36,10 +36,6 @@ jobs:
       - name: Create GH release
         run: gh release create ${{ github.event.inputs.tag }} --generate-notes
       - name: ZIP release
-        run: zip -r FluvioClientSwift.zip FluvioClientSwift/
+        run: zip -r FluvioClientSwift.zip LICENSE FluvioClientSwift/
       - name: Upload zip file to GH release
         run: gh release upload ${{ github.event.inputs.tag }} FluvioClientSwift.zip
-      - name: Publish CocoaPod Spec
-        run: |
-          pod repo add infinyon https://github.com/infinyon/CocoaPodSpecs.git
-          pod repo push infinyon --allow-warnings
