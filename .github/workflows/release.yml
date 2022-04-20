@@ -41,5 +41,5 @@ jobs:
         run: gh release upload ${{ github.event.inputs.tag }} FluvioClientSwift.zip
       - name: Publish CocoaPod Spec
         run: |
-          pod repo add infinyon git@github.com:infinyon/CocoaPodSpecs.git
+          pod repo add infinyon https://github.com/infinyon/CocoaPodSpecs.git
           pod repo push infinyon --allow-warnings
