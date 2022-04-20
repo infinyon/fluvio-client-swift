@@ -19,27 +19,27 @@ jobs:
     permissions: write-all
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Rustup Targets
-        run: |
-          rustup target add aarch64-apple-ios-sim
-          rustup target add aarch64-apple-ios
-          rustup target add x86_64-apple-ios
-      - name: Install Swift Bridge CLI
-        run: cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
-      - name: Build Rust binaries
-        env:
-          CARGO_PROFILE: release
-        run: ./build-rust.sh
-      - name: Login GH CLI
-        run: gh auth login --with-token < <(echo ${{ secrets.GITHUB_TOKEN }})
-      - name: Create GH release
-        run: gh release create ${{ github.event.inputs.tag }} -d --generate-notes
-      - name: ZIP release
-        run: zip -r FluvioClientSwift.zip FluvioClientSwift/
-      - name: Upload zip file to GH release
-        run: gh release upload ${{ github.event.inputs.tag }} FluvioClientSwift.zip
+      # - uses: actions/checkout@v2
+      # - name: Install Rustup Targets
+      #   run: |
+      #     rustup target add aarch64-apple-ios-sim
+      #     rustup target add aarch64-apple-ios
+      #     rustup target add x86_64-apple-ios
+      # - name: Install Swift Bridge CLI
+      #   run: cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
+      # - name: Build Rust binaries
+      #   env:
+      #     CARGO_PROFILE: release
+      #   run: ./build-rust.sh
+      # - name: Login GH CLI
+      #   run: gh auth login --with-token < <(echo ${{ secrets.GITHUB_TOKEN }})
+      # - name: Create GH release
+      #   run: gh release create ${{ github.event.inputs.tag }} -d --generate-notes
+      # - name: ZIP release
+      #   run: zip -r FluvioClientSwift.zip FluvioClientSwift/
+      # - name: Upload zip file to GH release
+      #   run: gh release upload ${{ github.event.inputs.tag }} FluvioClientSwift.zip
       - name: Publish CocoaPod Spec
         run: |
-          pod repo add infinyon git@github.com:infinyon/CocoaPodSpecs.git
+          pod repo add infinyon https://github.com/infinyon/CocoaPodSpecs.git
           pod repo push infinyon --allow-warnings
