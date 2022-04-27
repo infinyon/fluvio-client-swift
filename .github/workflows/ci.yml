@@ -29,7 +29,7 @@ jobs:
       #   with:
       #     cache-on-failure: true
       - name: Install Swift Bridge CLI
-        run: cargo install -f swift-bridge-cli --git https://github.com/chinedufn/swift-bridge
+        run: cargo install swift-bridge-cli -f --version 0.1.32
       - name: Build Rust binaries
         run: ./build-rust.sh && du FluvioClientSwift
       - name: Build Swift package
