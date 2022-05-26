@@ -1,10 +1,22 @@
 use fluvio::{
     Fluvio as FluvioNative,
-    TopicProducer as TopicProducerNative, FluvioConfig, config::{TlsPolicy, TlsConfig, TlsCerts},
+    TopicProducer as TopicProducerNative,
+    PartitionConsumer as PartitionConsumerNative,
+    Offset as OffsetNative,
+    FluvioConfig, config::{TlsPolicy, TlsConfig, TlsCerts},
+    consumer::Record,
+    dataplane::ErrorCode,
 };
+
 use fluvio_future::{
     task::run_block_on,
+    io::{
+        Stream,
+        StreamExt,
+    },
 };
+use std::pin::Pin;
+
 #[swift_bridge::bridge]
 mod ffi {
     extern "Rust" {
@@ -22,10 +34,26 @@ mod ffi {
             self: &TopicProducer,
             key: &[u8],
             value: &[u8],
-        ) ;
+        );
         pub fn flush(
             self: &TopicProducer
-        ) ;
+        );
+
+        type PartitionConsumer;
+        fn partition_consumer(
+            self: &Fluvio,
+            topic: &str,
+            partition: i32
+        ) -> PartitionConsumer;
+        type Offset;
+
+        type PartitionConsumerStream;
+        fn stream(
+            self: &PartitionConsumer,
+            offset: Offset,
+        ) -> PartitionConsumerStream;
+        type Record;
+        fn next(self: &mut PartitionConsumerStream) -> Option<Record>;
     }
 }
 
@@ -64,6 +92,13 @@ impl Fluvio {
     ) -> TopicProducer {
         TopicProducer::from(run_block_on(self.fluvio.topic_producer(topic)).unwrap())
     }
+    pub fn partition_consumer(
+        self: &Fluvio,
+        topic: &str,
+        partition: i32,
+    ) -> PartitionConsumer {
+        PartitionConsumer::from(run_block_on(self.fluvio.partition_consumer(topic, partition)).unwrap())
+    }
 }
 
 pub struct TopicProducer {
@@ -89,5 +124,54 @@ impl From<TopicProducerNative> for TopicProducer {
         Self {
             producer
         }
+    }
+}
+
+pub struct PartitionConsumer {
+    inner: PartitionConsumerNative
+}
+
+impl PartitionConsumer {
+    pub fn stream(&self, offset: Offset) -> PartitionConsumerStream {
+        PartitionConsumerStream {
+            inner: Box::pin(run_block_on(self.inner.stream(offset.into())).unwrap())
+        }
+    }
+}
+
+type PartitionConsumerIteratorInner =
+    Pin<Box<dyn Stream<Item = Result<Record, ErrorCode>> + Send>>;
+
+pub struct PartitionConsumerStream {
+    pub inner: PartitionConsumerIteratorInner,
+}
+impl PartitionConsumerStream {
+    pub fn next(&mut self) -> Option<Record> {
+        run_block_on(self.inner.next()).transpose().unwrap()
+    }
+}
+
+impl From<PartitionConsumerNative> for PartitionConsumer {
+    fn from(inner: PartitionConsumerNative) -> Self {
+        Self {
+            inner
+        }
+    }
+}
+
+pub struct Offset {
+    inner: OffsetNative,
+}
+
+impl From<OffsetNative> for Offset {
+    fn from(inner: OffsetNative) -> Self {
+        Self {
+            inner
+        }
+    }
+}
+impl Into<OffsetNative> for Offset {
+    fn into(self) -> OffsetNative {
+        self.inner
     }
 }
