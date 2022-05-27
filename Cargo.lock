@@ -568,9 +568,9 @@ dependencies = [
 
 [[package]]
 name = "fluvio-future"
-version = "0.3.17"
+version = "0.3.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc6a89ad97db849764e15c37fa98146599d97e1e5c10460ec3b73d67277b8de9"
+checksum = "1e2d1fad8e412d44c516add2349a34f6d71d9279b108c8e012325ab17fcbf982"
 dependencies = [
  "async-io",
  "async-net",
@@ -1070,7 +1070,7 @@ dependencies = [
 [[package]]
 name = "openssl-src"
 version = "111.19.0"
-source = "git+https://github.com/nacardin/openssl-src-rs#4b7f622ab112473df10b8e2147eb86353484ba36"
+source = "git+https://github.com/infinyon/openssl-src-rs#4b7f622ab112473df10b8e2147eb86353484ba36"
 dependencies = [
  "cc",
 ]
