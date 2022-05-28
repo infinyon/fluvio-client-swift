@@ -36,3 +36,7 @@ jobs:
         run: |
           cd FluvioClientSwift
           xcodebuild -scheme FluvioClientSwift -destination generic/platform=iOS
+      - name: Run Swift Example tests
+        run: |
+          cd FluvioClientSwiftExample/
+          xcodebuild test -scheme 'FluvioClientSwiftExample (iOS)' -project FluvioClientSwiftExample.xcodeproj  -destination 'platform=iOS Simulator,name=iPhone 12'
